@@ -1,7 +1,7 @@
 ---
 title: "Algebraic Data Types - Intro for java devs"
 date: "2020-04-14T12:00:00.000Z"
-author: "eng"
+author: "edreyer"
 tags:
 - blog
 - java
