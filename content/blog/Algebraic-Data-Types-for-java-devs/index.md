@@ -79,7 +79,7 @@ object Listing {
 
 No need to understand Scala.  I'll highlight the important bits here:
 
- - We've create the notion of a `Listing`
+ - We've created the notion of a `Listing`.
  - Unlike in Java, where any public interface can be implemented by any class anywhere, we've restricted subtypes of `Listing` to `DealerListing` and `PersonListing`.
  - We've made the class constructors private, in favor of "static" `create()` factory methods.
  - The factory methods enforce that legal values are supplied. 
