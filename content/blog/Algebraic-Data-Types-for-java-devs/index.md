@@ -11,11 +11,11 @@ tags:
 # Algebraic Data Types - for java devs
 ## What’s the problem?
 
-If you’ve ever worked on a java project that involved a database, odds are you used an ORM like Hibernate or JPA. Despite the promise that these systems solve the impedance mismatch problem between the two-dimensional structure of database tables to the richer object graphs of a domain model, odds are your mapped domain objects pretty closely mirror the structure of the database.
+If you’ve ever worked on a java project that involved a database, odds are you used an ORM like Hibernate or JPA. Despite the promise that these systems solve the impedance mismatch problem between the two-dimensional structure of database tables to the richer object graphs of a domain model, it's likely your mapped domain objects pretty closely mirror the structure of the database.
 
 A hidden consequence typical of designs like this is that the structure of the database leaks back into the structure of the domain, influencing the design of your entire application. The entities probably map to a table on a field by field basis. We usually end up with one or more java object graphs that are nothing more than fancy structs for holding data in what has come to be known as an [anemic domain](https://martinfowler.com/bliki/AnemicDomainModel.html). As I will outline here, this is a primary source of bugs in our applications.
 
-Entities often have various states specific to your business problem that are modeled using enums or boolean flags. Here is where our first issue arises. It is common that an entity in a particular state is often accompanied by various other fields of data specific to that state. An entity may go through a series of states as it moves through a workflow, with each state contributing its own particular set of data. Although a class may eventually have all its fields populated many class fields may be null until various class states come into play. Other fields may never be populated if a class goes through a workflow that involves branching logic. This aspect of how we model our domains is one of the single largest sources of bugs in our applications. How?
+Entities often have various states specific to your business problem that are modeled using enums or boolean flags. Here is where our first issue arises. It is common that an entity in a particular state is often accompanied by various other fields of data specific to that state. An entity may go through a series of states as it moves through a workflow, with each state contributing its own particular set of data. Although a class may eventually have all its fields populated, many class fields may be null until various class states come into play. Other fields may never be populated if a class goes through a workflow that involves branching logic. This aspect of how we model our domains is one of the single largest sources of bugs in our applications. How?
 
 Our applications tend to bundle business logic into stateless service classes. This service layer is where the business logic of our application resides. Entities passed as arguments to service methods must be checked to ensure they are in a state applicable to the method. That is, our service methods tend to have various checks to enforce the invariants of our domain.  Is an entity even in a valid state for a given method? It is incumbent on the developer to check. What do we do with fields if they are null? As java engineers, dealing with nulls is always part of the mental process when writing code.  And even so, don’t we still too frequently fall prey to the NullPointerException?
 
@@ -116,7 +116,7 @@ class ListingService {
     }
 }
 ```
-What happens if we were to add a new type of Listing?  Let's say `AuctionListing`.  We can add the new `AuctionListing` class and successfully compile our project.  Our next task, if we're diligent, would be to search for all usages of `Listing` to see if business logic needs to be updated to accommodate our new `AuctionListing`.   We'd have to carefully read the code at each search result to see if the logic requires modification.
+What happens if we were to add a new type of Listing?  Let's say `EnterpriseListing`.  We can add the new `EnterpriseListing` class and successfully compile our project.  Our next task, if we're diligent, would be to search for all usages of `Listing` to see if business logic needs to be updated to accommodate our new `EnterpriseListing`.   We'd have to carefully read the code at each search result to see if the logic requires modification.
 
 Wouldn't it be better if, just by adding the new type, all the touch points no longer compiled?  No more searching and reading code.  You'd have instant feedback on what code required updating.  
 
@@ -131,7 +131,7 @@ def listingSellerName(listing: Listing): String = listing match {
 
 If you compare this to our java version above, I think you'll find it easier to read.  There's less cognitive load to understand this.  No `if-else` chain.  No `instanceof` checks.  It's devoid of any clutter.
 
-And most importantly, as soon as we add a new `AuctionListing` type, this method will fail to compile, thanks to **exhaustive pattern matching**.  In my opinion, this is the single largest benefit of ADTs. We move potential runtime problems to compile time, giving us instant feedback on where our code needs to be updated to accommodate the new type.
+And most importantly, as soon as we add a new `EnterpriseListing` type, this method will fail to compile, thanks to **exhaustive pattern matching**.  In my opinion, this is the single largest benefit of ADTs. We move potential runtime problems to compile time, giving us instant feedback on where our code needs to be updated to accommodate the new type.
 
 You might notice something else about this code.  Look at each `case` statement.  The pattern matcher will match a particular case if the `listing` being matched matches the type.  But what about what looks like an argument in the parenthesis after the class name?  This brings us to...
 
@@ -263,7 +263,7 @@ public String listingSellerName(Listing listing) {
 }
 ```
 
-This is nearly as clean and concise as the scala version!  And just like with scala, if we add a new `AuctionListing`, this will no longer compile thanks to exhaustive pattern matching.  Finally, notice we have class destructuring in each lambda, corresponding to each "case".  
+This is nearly as clean and concise as the scala version!  And just like with scala, if we add a new `EnterpriseListing`, this will no longer compile thanks to exhaustive pattern matching.  Finally, notice we have class destructuring in each lambda, corresponding to each "case".  
 
 Just for sake of comparison, here's our original java method, using a more traditional approach.
 
