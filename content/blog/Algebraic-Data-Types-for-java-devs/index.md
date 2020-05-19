@@ -293,7 +293,7 @@ Finally, because we're just introducing the topic here, we chose to highlight on
 
 #### references
 
- 1. https://jnkr.tech/blog/introduction-to-algebraic-data-types
- 2. https://pragprog.com/book/swdddf/domain-modeling-made-functional
- 3. https://github.com/derive4j/derive4j
- 4. https://gitter.im/derive4j/derive4j
+ 1. [https://jnkr.tech/blog/introduction-to-algebraic-data-types](https://jnkr.tech/blog/introduction-to-algebraic-data-types)
+ 2. [https://pragprog.com/book/swdddf/domain-modeling-made-functional](https://pragprog.com/book/swdddf/domain-modeling-made-functional)
+ 3. [https://github.com/derive4j/derive4j](https://github.com/derive4j/derive4j)
+ 4. [https://gitter.im/derive4j/derive4j](https://gitter.im/derive4j/derive4j)
