@@ -57,5 +57,10 @@
   { "id": "kkumar",
     "name": "Krishna Kumar",
     "avatar": "kkumar.png"
-  }
+  },
+  {
+    "id": "edreyer",
+    "name": "Erik Dreyer",
+    "avatar": "erik_dreyer.png"
+  }  
 ]

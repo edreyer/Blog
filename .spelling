@@ -125,6 +125,27 @@ Publicis
 remediate
 Etsy
 callout
+ORM
+JPA
+structs
+enums
+boolean
+NullPointerException
+ADTs
+OOP
+OCaml
+ADT
+pojos
+enum
+programmatically
+stateful
+destructuring
+destructure
+LTS
+scala
+kotlin
+derive4j
+https
  - content/blog/Cutting-our-webpack-build-time-in-half/index.md
 DLL's
 HashCache
@@ -155,3 +176,5 @@ declaratively
 knowns
 3am
 all-nighter
+ - content/blog/Algebraic-Data-Types-for-java-devs/index.md
+devs
