@@ -146,6 +146,8 @@ scala
 kotlin
 derive4j
 https
+TBD
+tagless
  - content/blog/Cutting-our-webpack-build-time-in-half/index.md
 DLL's
 HashCache
@@ -178,3 +180,6 @@ knowns
 all-nighter
  - content/blog/Algebraic-Data-Types-for-java-devs/index.md
 devs
+ - content/blog/Building-a-Pure-Functional-Random-Number-Generator/index.md
+e.g.
+RNG
