@@ -27,14 +27,14 @@ In [Java Concurrency In Practice](https://jcip.net/), one statement is oft repea
 
 The use of immutable data is one of the core tenets of Functional Programming (FP). Functional programs are easier to test and to prove correct. It turns out functional programs can easily be parallelized, largely due to this aspect. 
 
-Having practiced OOP for many years, my experience in trying to grok FP to be a long and sometimes frustrating experience. I've found online resources to be either trivial (e.g. *"A pure function is..."*) or opaque (e.g. *"Tagless Final?"*). Essentially, it felt like being given a whole new toolbox, with a whole new set of tools, some of which I might understand to a degree, but none of which I know how or where to use.
+Having practiced OOP for many years, my experience in trying to grok FP to be a long and sometimes frustrating experience. I've found online resources to be either trivial (e.g. *"A pure function is..."*) or opaque (e.g. *"Tagless Final"?*). Essentially, it felt like being given a whole new toolbox, with a whole new set of tools, some of which I might understand to a degree, but none of which I know how or where to use.
 
 The goal here is to start simply enough with a question. How can I create pure functional random number generator (RNG)? From this starting point, we can methodically create an abstraction of that concept and in the process discover something called the State Monad. More importantly, by the end of this process we should have a decent understanding of what that is, and how to use it. 
 
 We're going to take a step-by-step approach.  We will move pretty quickly past the trivial into slightly more advanced topics.  The goal is not only introduce new concepts but provide enough material so that you, dear reader, have some understanding of how and when you might use some of these concepts. Let's get started. 
 
 ### A Basic Functional Random Number Generator 
-Our RNG will essentially be implemented as a simple method on a class. We're not going to actually create a random number generator from scratch, but we'll make use of java's `java.util.Random`.  This will just be an implementation detail of our method.
+Our RNG will initially be implemented as a simple method on a class. We're not going to actually create a random number generator from scratch, but we'll make use of java's `java.util.Random`.  This will just be an implementation detail of our method.
 
 Starting from first principals, in FP parlance, a **pure function** is simply a function that given some input **X**, will **always** return the same output **Y**. No exceptions. Literally, no `Exception`s. Here is an example of a very basic pure function in java.
 
@@ -49,12 +49,12 @@ Regardless of what value for `x` you pass, you will always get back an increment
 Consider java's `java.util.Random`.  It doesn't need an input to produce a value. Not only that, it mutates its internal state each time a random value is produced. :
 
 ```java
-Random rand = new Random();          ➊
-int randomInt = rand.nextInt()       ➋                  
+Random rand = new Random();    1
+int randomInt = rand.nextInt() 2                  
 ```
-➊ No data required to construct an instance
+1 -- No data required to construct an instance
 
-➋ No input required to generate the next random integer.
+2 -- No input required to generate the next random integer.
 
 Yet, it's still possible to use `Random` to produce a pure functional random number generating function. One that, given an input, will produce the same output.  
 
@@ -67,14 +67,14 @@ class Step1 {
         Integer seed;
     }
 	static int randomInteger(Seed seed) {
-        Random rand = new Random(seed.seed);				➊
-        return rand.nextInt();								➋
+        Random rand = new Random(seed.seed);  1
+        return rand.nextInt();				  2
     }
 }
 ```
-➊  We've created a `Seed` class that just wraps an Integer value. We use this value to seed our `Random` instance. The ability to seed our random is the key to this whole thing. It allows us to get the same output for a given input. This works because `Random` is really a [pseudo-random generator](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html).  
+1 -- We've create a `Seed` class that just wraps an Integer value. We use this value to seed our `Random` instance. The ability to seed our random is the key to this whole thing. It allows us to get the same output for a given input. This works because `Random` is really a [pseudo-random generator](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html).  
 
-➋  Using our seeded `Random` generate a "predictable" random number. It's predictable in that for a given seed value, we will always get the same result.
+2 -- Using our seeded `Random` generate a "predictable" random number. It's predictable in that for a given seed value, we will always get the same result.
 
 Here's how we can use our new function to generate a series of random numbers:
 
@@ -100,26 +100,26 @@ First, I'm going to change the return type of our `randomInteger()` method from 
 class Step1 {
 //...
 	static class RandomResult {
-	    Seed seed;				➊
-	    Integer rand;			➋
+	    Seed seed;				1
+	    Integer rand;			2
 	}
 }
 ```
 This type is a tuple of two values:
-➊ `seed` is a new seed value, to be used as input when we want to acquire a new random integer.
-➋ `rand` is our generated random integer
+1 -- `seed` is a new seed value, to be used as input when we want to acquire a new random integer.
+2 -- `rand` is our generated random integer
 
 Here is our method updated with this new type:
 ```java
 static RandomResult randomInteger(Seed seed) {
     Random rand = new Random(seed.seed);
     int x = rand.nextInt();
-    return new RandomResult(x, new Seed(x));   ➊
+    return new RandomResult(x, new Seed(x));   1
 }
 ```
-➊ We use the generated value `x` as both the random result, and as the basis for our new `Seed` instance.
+1 -- We use the generated value `x` as both the random result, and as the basis for our new `Seed` instance.
 
-If you're scratching your head on why we would do this, we'll expand on this shortly, but for now think of `rand` as the desired value, and `seed` as an updated container for application state. In this rather simple use case, they can just be the same value. 
+If you're scratching your head on why we would do this, we'll expand on this in Part 2, but for now think of `rand` as the desired value, and `seed` as an updated container for application state. In this rather simple use case, they can just be the same value. 
 
 ### Method to Function
 Above, we essentially have an OOP approach to creating a stateless RNG. It's a stateless method.  It's stateless because the state is passed in on each invocation, and an updated state is returned in the result. Even though we use a stateful object internally, it's discarded on each invocation.
@@ -130,13 +130,15 @@ Let's convert this class method to a function value. We can do that with the fol
 class Step1 {
 //...
 	interface RandomIntFn 
-		extends Function<Seed, RandomResult> {} ➊
+		extends Function<Seed, RandomResult> {} 1
+
     static final RandomIntFn randomIntFn = 
-    	Step1::randomInteger;  					➋
+	    Step1::randomInteger;  					2
 }
 ```
-➊ Yes, you can extend `Function`. By doing that here, we're creating a shorter name. It's a shorter alias than the longer `Function<Seed, RandomResult>`.
-➋ `randomIntFn` is a variable, whose value is a function. We can assign the class method `Step1.randomInteger` to our variable `randomIntFn` because its signature matches that of our `RandomIntFn` type. 
+1 -- Yes, you can extend `Function`. By doing that here, we're creating a shorter name. It's like an alias to the longer  `Function<Seed, RandomResult>`.
+
+2 -- `randomIntFn` is a variable, whose type is a function. We can assign the class method `Step1.randomInteger` to our variable `randomIntFn` because its signature matches that of our `RandomIntFn` type. 
 
 What we've done is to convert a class method to a value. This value happens to be a function type, but can be treated like any other value, e.g. `String`, or `Integer`. It can be passed around like a value. It can be provided as input to or returned from other methods/functions. This forms a basis for function composition.
 
