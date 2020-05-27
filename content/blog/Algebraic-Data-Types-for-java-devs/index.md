@@ -8,7 +8,6 @@ tags:
 - ADT
 ---
 
-# Algebraic Data Types - for java devs
 ## What’s the problem?
 
 If you’ve ever worked on a java project that involved a database, odds are you used an ORM like Hibernate or JPA. Despite the promise that these systems solve the impedance mismatch problem between the two-dimensional structure of database tables to the richer object graphs of a domain model, it's likely your mapped domain objects pretty closely mirror the structure of the database.
