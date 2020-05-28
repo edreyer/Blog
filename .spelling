@@ -148,6 +148,10 @@ derive4j
 https
 TBD
 tagless
+parameterizing
+parameterized
+booleans
+3D
  - content/blog/Cutting-our-webpack-build-time-in-half/index.md
 DLL's
 HashCache
@@ -182,4 +186,7 @@ all-nighter
 devs
  - content/blog/Building-a-Pure-Functional-Random-Number-Generator/index.md
 e.g.
+RNG
+ - content/blog/Building-a-Pure-Functional-Random-Number-Generator-Part-2/index.md
+edreyer
 RNG
