@@ -11,7 +11,7 @@ tags:
 This topic is broken out into a three part series, each building on the other.  This is Part 1.
 
  - Part 1 - A  simple pure functional random number generator
- - Part 2 - Finding the abstractions (TBD)
+ - Part 2 - [Finding the abstractions](/Building-a-Pure-Functional-Random-Number-Generator-Part-2/)
  - Part 3 - Discovering the State monad (TBD)
 
 ## Part 1

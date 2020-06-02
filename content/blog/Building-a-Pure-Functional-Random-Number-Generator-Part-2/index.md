@@ -5,6 +5,7 @@ author: "edreyer"
 tags:
 - java
 - functional programming
+- lambda
 
 ## Part 2
 
