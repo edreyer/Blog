@@ -29,7 +29,7 @@ Like other monads, the State monad wraps a value.  In this case, it's a bit more
 
 `State -> (State', Value)`
 
-Look familiar?  If not, please go back and re-read Part 2 (TODO: link).  
+Look familiar?  If not, please go back and re-read Part 2.  
 
 In Part 2, we created our own specialization of `Function`.  We created type, called `StateFn`, whose signature matches this shape.  To make this useful, we also had to develop and write our own `map()` and `flatMap()` methods.  The State monad provides that for us.  And the good news is that we don't have to write our own State monad.  There are libraries that provides this for us.
 
