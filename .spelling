@@ -152,6 +152,9 @@ parameterizing
 parameterized
 booleans
 3D
+parameterize
+e.g.
+arities
  - content/blog/Cutting-our-webpack-build-time-in-half/index.md
 DLL's
 HashCache
