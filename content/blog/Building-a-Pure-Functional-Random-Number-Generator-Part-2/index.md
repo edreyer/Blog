@@ -16,6 +16,7 @@ This topic is broken out into a three part series, each building on the other.  
  - Part 3 - Discovering the State monad (TBD)
 
 ### Finding the Abstractions
+
 In [Part 1](/Building-a-Pure-Functional-Random-Number-Generator/), we created a simple pure functional random number generator. Let's build on this by finding some hidden abstractions in that implementation.  We will find and extract those to recreate our functional RNG using a more generalized approach.
 
 When we introduced our `RandomResult` class, we briefly mentioned that it was a tuple of a desired result and a state object. Let's create an abstraction for that tuple and redefine our RNG function to use that abstraction.  We're renaming `RandomResult` to `StateResult` and parameterizing the types of the `state` and `value` fields.
